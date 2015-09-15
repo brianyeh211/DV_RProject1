@@ -4,7 +4,6 @@ author: Brian Yeh, Valentina Chen
 output: html_document
 ---
 
-###Load Required packages
 ```{r echo=FALSE, message=FALSE}
 require("jsonlite")
 require("RCurl")
@@ -15,7 +14,7 @@ require("ggplot2")
 
 ###Summary of dataframe  
 SQL Query: select * from titanic
-```{r}
+```{r echo=FALSE}
 
 df <- data.frame(fromJSON(getURL(URLencode('129.152.144.84:5001/rest/native/?query="select * from titanic"'),httpheader=c(DB='jdbc:oracle:thin:@129.152.144.84:1521/PDBF15DV.usuniversi01134.oraclecloud.internal', USER='cs329e_by2578', PASS='orcl_by2578', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))
 
@@ -50,7 +49,7 @@ ggplot() +
 
 SQL Query: select * from titanic where sex is not null
 
-```{r}
+```{r warning=FALSE}
 
 df <- data.frame(fromJSON(getURL(URLencode('129.152.144.84:5001/rest/native/?query="select * from titanic where sex is not null"'),httpheader=c(DB='jdbc:oracle:thin:@129.152.144.84:1521/PDBF15DV.usuniversi01134.oraclecloud.internal', USER='cs329e_by2578', PASS='orcl_by2578', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))
 
