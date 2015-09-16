@@ -15,122 +15,39 @@ require("ggplot2")
 ###Summary of dataframe  
 SQL Query: select * from titanic
 ```{r echo=FALSE}
-
-df <- data.frame(fromJSON(getURL(URLencode('129.152.144.84:5001/rest/native/?query="select * from titanic"'),httpheader=c(DB='jdbc:oracle:thin:@129.152.144.84:1521/PDBF15DV.usuniversi01134.oraclecloud.internal', USER='cs329e_by2578', PASS='orcl_by2578', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))
-
+source("../01 Data/Dataframes_All.R", echo = TRUE)
 summary(df)
 ```
 
 ###Subset of dataframe: Males over the age of 40 who survived
 ```{r}
+source("../01 Data/Dataframes_All.R", echo = TRUE)
 df.sub <- subset(df, SURVIVED == 1 & SEX == "male" & as.numeric(AGE) > 40)
 df.sub
 ```
 
 ```{r warning=FALSE}
-
-ggplot() + 
-  coord_cartesian() + 
-  scale_x_continuous() +
-  scale_y_continuous() +
-  #facet_grid(PCLASS~SURVIVED) +
-  labs(title='Titanic') +
-  labs(x="Age", y=paste("Fare")) +
-  layer(data=df, 
-        mapping=aes(x=as.numeric(as.character(AGE)), y=as.numeric(as.character(FARE)), color=SEX), 
-        stat="identity", 
-        stat_params=list(), 
-        geom="point",
-        geom_params=list(), 
-        #position=position_identity()
-        position=position_jitter(width=0.3, height=0)
-  )
+source("../01 Data/Dataframes_All.R", echo = TRUE)
+source("../02 Visualizations/GGplots_AgeVsFare.R", echo = TRUE)
 ```
 
 SQL Query: select * from titanic where sex is not null
 
 ```{r warning=FALSE}
-
-df <- data.frame(fromJSON(getURL(URLencode('129.152.144.84:5001/rest/native/?query="select * from titanic where sex is not null"'),httpheader=c(DB='jdbc:oracle:thin:@129.152.144.84:1521/PDBF15DV.usuniversi01134.oraclecloud.internal', USER='cs329e_by2578', PASS='orcl_by2578', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))
-
-ggplot() + 
-  coord_cartesian() + 
-  scale_x_continuous() +
-  scale_y_continuous() +
-  #facet_grid(PCLASS~SURVIVED) +
-  labs(title='Titanic') +
-  labs(x="Age", y=paste("Fare")) +
-  layer(data=df, 
-        mapping=aes(x=as.numeric(as.character(AGE)), y=as.numeric(as.character(FARE)), color=SEX), 
-        stat="identity", 
-        stat_params=list(), 
-        geom="point",
-        geom_params=list(), 
-        #position=position_identity()
-        position=position_jitter(width=0.3, height=0)
-  )
+source("../01 Data/Dataframes_NoNullSex.R", echo = TRUE)
+source("../02 Visualizations/GGplots_AgeVsFare.R", echo = TRUE)
 ```
 
 ```{r warning=FALSE}
-
-ggplot() + 
-  coord_cartesian() + 
-  scale_x_discrete() +
-  scale_y_continuous() +
-  #facet_grid(PCLASS~SURVIVED) +
-  labs(title='Titanic') +
-  labs(x="Survived", y=paste("Fare")) +
-  layer(data=df, 
-        mapping=aes(x=SEX, y=as.numeric(as.character(FARE)), color=as.character(SURVIVED)), 
-        stat="identity", 
-        stat_params=list(), 
-        geom="point",
-        geom_params=list(), 
-        #position=position_identity()
-        position=position_jitter(width=0.3, height=0)
-  )
-
-
-ggplot() + 
-  coord_cartesian() + 
-  scale_x_discrete() +
-  scale_y_continuous() +
-  facet_grid(PCLASS~SURVIVED, labeller=label_both) +
-  labs(title='Titanic') +
-  labs(x="SURVIVED", y=paste("FARE")) +
-  layer(data=df, 
-        mapping=aes(x=SEX, y=as.numeric(as.character(FARE)), color=SEX), 
-        stat="identity", 
-        stat_params=list(), 
-        geom="point",
-        geom_params=list(), 
-        #position=position_identity()
-        position=position_jitter(width=0.3, height=0)
-  )
-
+source("../01 Data/Dataframes_NoNullSex.R", echo = TRUE)
+source("../02 Visualizations/GGplots_SurvivedVsFare.R", echo = TRUE)
+source("../02 Visualizations/GGplots_SurvivedVsFareVsClass.R", echo = TRUE)
 ```
 
 SQL Query = select * from titanic where age <= 10
 ```{r warning=FALSE}
-df <- data.frame(fromJSON(getURL(URLencode('129.152.144.84:5001/rest/native/?query="select * from titanic where age <= 10"'),httpheader=c(DB='jdbc:oracle:thin:@129.152.144.84:1521/PDBF15DV.usuniversi01134.oraclecloud.internal', USER='cs329e_by2578', PASS='orcl_by2578', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))
-
-
-ggplot() + 
-  coord_cartesian() + 
-  scale_x_discrete() +
-  scale_y_continuous() +
-  facet_grid(PCLASS~SURVIVED, labeller=label_both) +
-  labs(title='Titanic where age <=10') +
-  labs(x="SURVIVED", y=paste("FARE")) +
-  layer(data=df, 
-        mapping=aes(x=SEX, y=as.numeric(as.character(FARE)), color=SEX), 
-        stat="identity", 
-        stat_params=list(), 
-        geom="point",
-        geom_params=list(), 
-        #position=position_identity()
-        position=position_jitter(width=0.3, height=0)
-  )
+source("../01 Data/Dataframes_Age_10.R", echo = TRUE)
+source("../02 Visualizations/GGplots_SurvivedVsFareVsClass.R", echo = TRUE)
 
 ```
   
@@ -138,22 +55,7 @@ ggplot() +
 Interesting to see how more females survived overrall. However, many of the young men also survived at similar rates to females.  
 SQL Query = select * from titanic where AGE is not null
 ```{r}
-df <- data.frame(fromJSON(getURL(URLencode('129.152.144.84:5001/rest/native/?query="select * from titanic where AGE is not null"'),httpheader=c(DB='jdbc:oracle:thin:@129.152.144.84:1521/PDBF15DV.usuniversi01134.oraclecloud.internal', USER='cs329e_by2578', PASS='orcl_by2578', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))
+source("../01 Data/Dataframes_NoNullAge.R", echo = TRUE)
+source("../02 Visualizations/GGplots_SurvivedVsAge.R", echo = TRUE)
 
-ggplot() + 
-  coord_cartesian() + 
-  scale_x_discrete() +
-  scale_y_continuous() +
-  #facet_grid(PCLASS~SURVIVED) +
-  labs(title='Titanic') +
-  labs(x="Survived", y=paste("AGE")) +
-  layer(data=df, 
-        mapping=aes(x=SEX, y=as.numeric(AGE), color=as.character(SURVIVED)), 
-#         stat="identity", 
-#         stat_params=list(), 
-         geom="point",
-         geom_params=list(), 
-        #position=position_identity()
-        position=position_jitter(width=0.3, height=0)
-  )
 ```
